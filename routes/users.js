@@ -91,7 +91,7 @@ router.put('/:id', async (req, res) => {
 
   try {
     const result = await pool.query(
-      'UPDATE usuarios SET nombre = $1, correo = $2, edad = $3 WHERE id = $4',
+      'UPDATE usuarios SET nombre = $1, correo = $2, edad = $3 WHERE id = $4 RETURNING *',
       [nombre, correo, edad, userId]
     );
 
@@ -118,7 +118,7 @@ router.delete('/:id', async (req, res) => {
   const userId = req.params.id; // Obtiene el ID del usuario desde los parámetros de la ruta
 
   try {
-    const result = await pool.query('DELETE FROM usuarios WHERE id = $1', [userId]);
+    const result = await pool.query('DELETE FROM usuarios WHERE id = $1 RETURNING *', [userId]);
 
     // Manejo si no se encuentra el usuario
     if (result.rowCount === 0) {
